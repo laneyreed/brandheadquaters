@@ -141,7 +141,7 @@ No need to repeat font-family, size, weight, or letter-spacing anywhere, it's al
 **Foundation is now fully set up with a consistent design system, reusable typography styles, and a layout shell that ensures every page has the same header and footer. The next steps will be to build out the individual pages and components using this solid foundation.**
 
 
-### No Testt Yet
+## No Testt Yet
 - Right now every file is either configuration (tokens, fonts, layout) or static UI (Header, Footer). 
 - There's nothing with logic to test because there is no data fetching, no state transformations, no conditional behavior beyond the mobile menu toggle
 - Writing tests at this stage would just be testing that HTML renders, which isn't valuable.
@@ -150,3 +150,5 @@ No need to repeat font-family, size, weight, or letter-spacing anywhere, it's al
 - When pages have real data or dynamic content
 - When you build forms (contact, newsletter)
 - When you add any business logic
+
+*For now the build check `npm run build` is doing the job, it catches TypeScript errors and broken imports, which covers everything we've built so far*

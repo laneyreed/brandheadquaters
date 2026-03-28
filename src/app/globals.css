@@ -115,6 +115,87 @@ body {
 }
 
 /* ─────────────────────────────────────────────
+   BUTTON STYLES
+───────────────────────────────────────────── */
+
+/* Primary — brand gradient, Orbitron */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-mid));
+  color: #fff;
+  box-shadow: var(--glow-brand);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(139, 128, 249, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Secondary — outlined, brand border */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-brand-light);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+.btn-secondary:hover {
+  background: rgba(139, 128, 249, 0.1);
+  border-color: var(--color-brand);
+}
+
+/* ─────────────────────────────────────────────
+   INTERACTIVE HELPERS
+───────────────────────────────────────────── */
+
+.footer-link {
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-out);
+}
+.footer-link:hover {
+  color: var(--color-brand-light);
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.social-link:hover {
+  color: var(--color-brand);
+  transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────
    TYPE SCALE — Build With Shannon
    Source: brandsystem.html → Typography section
 ───────────────────────────────────────────── */

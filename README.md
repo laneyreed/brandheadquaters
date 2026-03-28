@@ -22,11 +22,25 @@ A premium personal brand website for Shannon as a builder, teacher, and systems-
 
 ## Sprint 2 — Homepage
 
-- [ ] Build Hero section — headline, subheading, CTA buttons
-- [ ] Build Intro Strip — short brand statement / value proposition
-- [ ] Build Featured Work section — project/system cards
-- [ ] Build Learning section — tutorials and guides preview
-- [ ] Build Services section — ways to work together
-- [ ] Build Resources section — tools, links, downloads
-- [ ] Build Homepage CTA section — newsletter or contact prompt
-- [ ] Wire all sections into `src/app/page.tsx`
+- [x] Add button styles and interaction helpers to `globals.css`
+- [x] Rebuild Footer — 3-zone layout with social icons (YouTube, X, Instagram, TikTok, GitHub)
+- [x] Build Hero section — 74vh, placeholder bg, 3-line heading, 2 CTA buttons
+- [x] Build Intro Strip — brand name + 3 icon/label pillars with dividers
+- [x] Build Featured Work section — 2-col, text left, 2×2 image card grid right
+- [x] Build Learn section — header block + 3-col card grid with thumbnails
+- [x] Build Work With Me section — 2-col, text left, stacked service blocks right
+- [x] Build Resources section — header + gradient rule + 3-col tall card grid
+- [x] Build About Preview section — 2-col, portrait placeholder + text + outlined CTA
+- [x] Build Final CTA section — centered narrow column, headline, desc, 2 buttons
+- [x] Wire all sections into `src/app/page.tsx`
+
+---
+
+## Sprint 3 — Inner Pages
+
+- [ ] Build About page — full biography, values, and story
+- [ ] Build Learn page — full tutorial/guide listing with filters
+- [ ] Build Systems page — featured projects and build showcases
+- [ ] Build Work With Me page — full services detail and contact pathway
+- [ ] Build Resources page — full resource library listing
+- [ ] Build Contact page — contact form and booking pathway

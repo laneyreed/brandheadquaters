@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Build with Shannon — Watermark Exporter</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#0D0B22;min-height:100%;font-family:'Share Tech Mono',monospace;}
+.page{max-width:900px;margin:0 auto;padding:32px 20px 60px;}
+
+.header{display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid rgba(139,128,249,0.15);}
+.header-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;}
+.header-sub{font-size:9px;color:rgba(139,128,249,0.5);letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
+
+.section-label{font-size:9px;letter-spacing:3px;color:rgba(139,128,249,0.4);text-transform:uppercase;margin-bottom:14px;}
+
+.instructions{background:#111827;border-radius:12px;padding:20px;border:1px solid rgba(139,128,249,0.12);margin-bottom:32px;}
+.step{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(139,128,249,0.07);}
+.step:last-child{border-bottom:none;padding-bottom:0;}
+.step-num{width:22px;height:22px;background:rgba(139,128,249,0.15);border:1px solid rgba(139,128,249,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#8B80F9;flex-shrink:0;}
+.step-text{font-size:10px;color:rgba(200,196,255,0.55);letter-spacing:.5px;line-height:1.8;}
+.step-text strong{color:#C8C4FF;}
+.acc{color:#FB923C;}
+
+/* preview panel */
+.preview-wrap{background:#111827;border-radius:12px;border:1px solid rgba(139,128,249,0.12);overflow:hidden;margin-bottom:32px;}
+.preview-bar{padding:12px 18px;border-bottom:1px solid rgba(139,128,249,0.08);display:flex;align-items:center;justify-content:space-between;}
+.preview-label{font-size:9px;letter-spacing:2px;color:rgba(139,128,249,0.4);text-transform:uppercase;}
+.preview-stage{position:relative;width:100%;aspect-ratio:16/9;background:#1a1a2e;overflow:hidden;}
+.preview-stage video-bg{position:absolute;inset:0;}
+/* fake video content */
+.fake-video{position:absolute;inset:0;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);display:flex;align-items:center;justify-content:center;}
+.fake-code{font-family:'Share Tech Mono',monospace;font-size:1.4vw;color:rgba(139,128,249,0.25);line-height:1.8;padding:20px;text-align:left;white-space:pre;}
+/* watermark overlay positioned bottom right */
+.wm-overlay{position:absolute;bottom:4%;right:3%;display:flex;flex-direction:column;gap:0;}
+
+/* export grid */
+.export-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px;}
+.export-card{background:#111827;border-radius:12px;padding:20px;border:1px solid rgba(139,128,249,0.12);display:flex;flex-direction:column;gap:14px;align-items:center;}
+.export-card canvas{border-radius:6px;display:block;max-width:100%;}
+.export-name{font-size:10px;letter-spacing:2px;color:#C8C4FF;text-transform:uppercase;text-align:center;}
+.export-desc{font-size:9px;color:rgba(200,196,255,0.35);letter-spacing:1px;text-align:center;line-height:1.6;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%;}
+.dl-btn{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;border-radius:6px;padding:7px 16px;cursor:pointer;border:none;transition:all .2s;}
+.dl-dark{background:rgba(139,128,249,0.15);color:#C8C4FF;border:1px solid rgba(139,128,249,0.3);}
+.dl-dark:hover{background:rgba(139,128,249,0.28);border-color:#8B80F9;}
+.dl-accent{background:rgba(251,146,60,0.12);color:#FB923C;border:1px solid rgba(251,146,60,0.3);}
+.dl-accent:hover{background:rgba(251,146,60,0.25);border-color:#FB923C;}
+
+/* opacity slider */
+.controls{background:#111827;border-radius:12px;padding:20px;border:1px solid rgba(139,128,249,0.12);margin-bottom:32px;display:flex;flex-direction:column;gap:14px;}
+.control-row{display:flex;align-items:center;gap:16px;}
+.control-label{font-size:10px;color:rgba(200,196,255,0.5);letter-spacing:1px;min-width:120px;}
+.control-val{font-size:10px;color:#8B80F9;letter-spacing:1px;min-width:36px;}
+input[type=range]{flex:1;accent-color:#8B80F9;}
+
+/* checkerboard for transparency preview */
+.checker{background:repeating-conic-gradient(rgba(200,196,255,0.07) 0% 25%, transparent 0% 50%) 0 0/12px 12px;border-radius:6px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <svg width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="12" fill="#1A1744"/>
+      <line x1="0" y1="16" x2="64" y2="16" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="0" y1="32" x2="64" y2="32" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="0" y1="48" x2="64" y2="48" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="16" y1="0" x2="16" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="32" y1="0" x2="32" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="48" y1="0" x2="48" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <path d="M46,19 C46,11 16,11 16,25 C16,35 48,35 48,45 C48,57 18,57 18,50" fill="none" stroke="#8B80F9" stroke-width="7.5" stroke-linecap="round"/>
+      <circle cx="49" cy="13" r="5.5" fill="#FB923C"/>
+    </svg>
+    <div>
+      <div class="header-title">Watermark Exporter</div>
+      <div class="header-sub">// build_with_shannon · transparent PNG · bottom right</div>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="section-label">how to use</div>
+  <div class="instructions">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Download the PNG</strong> that matches your video editor below.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Import it</strong> into your video editor (Premiere, DaVinci, CapCut, iMovie etc.) as an image layer above your video.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Position it</strong> in the bottom right corner and <strong>stretch it across your whole timeline</strong> so it appears on every frame.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><span class="acc">The background is transparent</span> — it will sit cleanly on top of any video footage.</div></div>
+  </div>
+
+  <!-- LIVE PREVIEW -->
+  <div class="section-label">live preview — adjust opacity</div>
+  <div class="preview-wrap">
+    <div class="preview-bar">
+      <div class="preview-label">video preview · watermark bottom right</div>
+      <div style="font-size:9px;color:rgba(251,146,60,0.6);letter-spacing:1px;">// simulated footage</div>
+    </div>
+    <div class="preview-stage">
+      <div class="fake-video">
+        <div class="fake-code">const app = await buildWithAI({
+  tools: ['claude', 'cursor', 'v0'],
+  skill: 'any level',
+  deploy: true
+})
+
+// build_with_shannon
+// day 47</div>
+      </div>
+      <!-- watermark SVG preview, opacity controlled by slider -->
+      <div class="wm-overlay" id="wm-preview" style="opacity:0.55;">
+        <svg id="preview-svg" width="220" height="52" viewBox="0 0 440 104" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="28" font-family="'Share Tech Mono', monospace" font-size="22" fill="#8B80F9" letter-spacing="4" opacity="1">build with</text>
+          <text x="0" y="80" font-family="'Orbitron', sans-serif" font-weight="700" font-size="56" fill="#FFFFFF" letter-spacing="4">SHANNON</text>
+          <rect x="0" y="88" width="360" height="3" rx="2" fill="url(#wg)"/>
+          <defs>
+            <linearGradient id="wg" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#8B80F9"/>
+              <stop offset="50%" stop-color="#FB923C"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPACITY CONTROL -->
+  <div class="section-label">adjust opacity</div>
+  <div class="controls">
+    <div class="control-row">
+      <div class="control-label">Opacity</div>
+      <input type="range" min="10" max="100" value="55" id="opacity-slider" oninput="updateOpacity(this.value)"/>
+      <div class="control-val" id="opacity-val">55%</div>
+    </div>
+    <div style="font-size:9px;color:rgba(200,196,255,0.3);letter-spacing:1px;line-height:1.8;">
+      The downloaded PNG is always full opacity — adjust opacity inside your video editor after import.<br>
+      <span style="color:#FB923C;">Recommended: 50–60% for most footage.</span>
+    </div>
+  </div>
+
+  <!-- EXPORT CARDS -->
+  <div class="section-label">download — transparent PNG</div>
+  <div class="export-grid" id="export-grid"></div>
+
+</div>
+
+<script>
+// opacity preview
+function updateOpacity(v) {
+  document.getElementById('wm-preview').style.opacity = v / 100;
+  document.getElementById('opacity-val').textContent = v + '%';
+}
+
+// ── drawing ──
+async function init() {
+  try { await document.fonts.ready; } catch(e) {}
+
+  const variants = [
+    {
+      name: 'White wordmark',
+      desc: 'For dark footage\nDark scenes · gaming · coding',
+      filename: 'bws-watermark-white',
+      topColor: '#8B80F9',
+      bottomColor: '#FFFFFF',
+      ruleStart: '#8B80F9',
+      ruleEnd: '#FB923C'
+    },
+    {
+      name: 'Purple wordmark',
+      desc: 'Softer on dark footage\nSubtle brand colour version',
+      filename: 'bws-watermark-purple',
+      topColor: '#8B80F9',
+      bottomColor: '#C8C4FF',
+      ruleStart: '#8B80F9',
+      ruleEnd: '#FB923C'
+    },
+    {
+      name: 'Light wordmark',
+      desc: 'For bright / light footage\nScreen recordings · slides',
+      filename: 'bws-watermark-dark',
+      topColor: '#5752C8',
+      bottomColor: '#1A1744',
+      ruleStart: '#5752C8',
+      ruleEnd: '#FB923C'
+    }
+  ];
+
+  const W = 880, H = 208;
+
+  function drawWatermark(ctx, variant) {
+    ctx.clearRect(0, 0, W, H);
+
+    // "build with" label
+    ctx.font = '44px "Share Tech Mono", monospace';
+    ctx.fillStyle = variant.topColor;
+    ctx.textAlign = 'left';
+    ctx.letterSpacing = '8px';
+    ctx.fillText('build with', 0, 56);
+
+    // "SHANNON"
+    ctx.font = 'bold 112px Orbitron, Arial, sans-serif';
+    ctx.fillStyle = variant.bottomColor;
+    ctx.letterSpacing = '6px';
+    ctx.fillText('SHANNON', 0, 160);
+
+    // gradient rule
+    const grad = ctx.createLinearGradient(0, 0, 720, 0);
+    grad.addColorStop(0, variant.ruleStart);
+    grad.addColorStop(0.5, variant.ruleEnd);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 172, 720, 6);
+  }
+
+  function buildPreview(variant) {
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    drawWatermark(ctx, variant);
+    return canvas;
+  }
+
+  function download(variant, scale) {
+    const sw = Math.round(W * scale), sh = Math.round(H * scale);
+    const c = document.createElement('canvas');
+    c.width = sw; c.height = sh;
+    const ctx = c.getContext('2d');
+    ctx.scale(scale, scale);
+    drawWatermark(ctx, variant);
+    const link = document.createElement('a');
+    link.download = `${variant.filename}-${sw}x${sh}.png`;
+    link.href = c.toDataURL('image/png');
+    link.click();
+  }
+
+  const grid = document.getElementById('export-grid');
+
+  variants.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'export-card';
+
+    // checkerboard + preview canvas
+    const wrap = document.createElement('div');
+    wrap.className = 'checker';
+    wrap.style.cssText = 'width:100%;padding:12px;';
+    const prev = buildPreview(v);
+    prev.style.cssText = 'width:100%;height:auto;border-radius:4px;';
+    wrap.appendChild(prev);
+    card.appendChild(wrap);
+
+    const name = document.createElement('div');
+    name.className = 'export-name';
+    name.textContent = v.name;
+    card.appendChild(name);
+
+    const desc = document.createElement('div');
+    desc.className = 'export-desc';
+    desc.innerHTML = v.desc.replace('\n','<br>');
+    card.appendChild(desc);
+
+    const btnRow = document.createElement('div');
+    btnRow.className = 'btn-row';
+
+    // 1080p
+    const b1 = document.createElement('button');
+    b1.className = 'dl-btn dl-dark';
+    b1.textContent = '↓ 1080p';
+    b1.title = '880×208px — standard HD';
+    b1.onclick = () => download(v, 1);
+    btnRow.appendChild(b1);
+
+    // 2x / 4K
+    const b2 = document.createElement('button');
+    b2.className = 'dl-btn dl-dark';
+    b2.textContent = '↓ 4K (2×)';
+    b2.title = '1760×416px — 4K footage';
+    b2.onclick = () => download(v, 2);
+    btnRow.appendChild(b2);
+
+    // small
+    const b3 = document.createElement('button');
+    b3.className = 'dl-btn dl-accent';
+    b3.textContent = '↓ 720p';
+    b3.title = '660×156px — 720p footage';
+    b3.onclick = () => download(v, 0.75);
+    btnRow.appendChild(b3);
+
+    card.appendChild(btnRow);
+    grid.appendChild(card);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
