@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS — Build With Shannon v1.0
+   Source: brandsystem.html
+───────────────────────────────────────────── */
+
+/* Raw CSS custom properties — usable anywhere in CSS */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+  /* ── Colors ── */
+  --color-base:          #0D0B22;
+  --color-bg:            #1A1744;
+  --color-surface:       #251F5C;
+  --color-brand:         #8B80F9;
+  --color-brand-mid:     #5752C8;
+  --color-brand-light:   #C8C4FF;
+  --color-accent:        #FB923C;
+  --color-accent-deep:   #E07020;
+
+  /* ── Text ── */
+  --text-primary:        rgba(255, 255, 255, 1);
+  --text-secondary:      rgba(200, 196, 255, 0.85);
+  --text-muted:          rgba(200, 196, 255, 0.45);
+  --text-brand:          #8B80F9;
+  --text-accent:         #FB923C;
+
+  /* ── Borders ── */
+  --border-subtle:       rgba(139, 128, 249, 0.12);
+  --border-default:      rgba(139, 128, 249, 0.25);
+  --border-strong:       rgba(139, 128, 249, 0.5);
+  --border-brand:        #8B80F9;
+  --border-accent:       rgba(251, 146, 60, 0.45);
+
+  /* ── Border Radius ── */
+  --radius-xs:           2px;
+  --radius-sm:           4px;
+  --radius-md:           6px;
+  --radius-lg:           10px;
+  --radius-xl:           14px;
+  --radius-pill:         9999px;
+  --radius-full:         50%;
+
+  /* ── Shadows & Glows ── */
+  --shadow-xs:           0 1px 4px rgba(139, 128, 249, 0.10);
+  --shadow-sm:           0 2px 12px rgba(139, 128, 249, 0.18);
+  --shadow-md:           0 4px 24px rgba(139, 128, 249, 0.25);
+  --shadow-lg:           0 8px 40px rgba(139, 128, 249, 0.35);
+  --glow-brand:          0 0 20px rgba(139, 128, 249, 0.30);
+  --glow-accent:         0 0 20px rgba(251, 146, 60, 0.30);
+  --ring-brand:          0 0 0 2px rgba(139, 128, 249, 0.50);
+  --ring-accent:         0 0 0 2px rgba(251, 146, 60, 0.50);
+
+  /* ── Motion ── */
+  --ease-out:            cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --ease-in-out:         cubic-bezier(0.4, 0.0, 0.2, 1.0);
+  --ease-spring:         cubic-bezier(0.34, 1.56, 0.64, 1.0);
+  --duration-fast:       120ms;
+  --duration-base:       200ms;
+  --duration-slow:       350ms;
+  --duration-page:       500ms;
+  --duration-glow:       1600ms;
+
+  /* ── Typography ── */
+  --font-display:        'Orbitron', sans-serif;
+  --font-mono:           'Share Tech Mono', monospace;
+  --font-body:           'DM Sans', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─────────────────────────────────────────────
+   TAILWIND THEME — registers tokens as utilities
+   e.g. bg-brand, text-accent, rounded-lg, shadow-md
+───────────────────────────────────────────── */
+@theme {
+
+  /* Colors */
+  --color-base:          #0D0B22;
+  --color-bg:            #1A1744;
+  --color-surface:       #251F5C;
+  --color-brand:         #8B80F9;
+  --color-brand-mid:     #5752C8;
+  --color-brand-light:   #C8C4FF;
+  --color-accent:        #FB923C;
+  --color-accent-deep:   #E07020;
+
+  /* Border Radius */
+  --radius-xs:           2px;
+  --radius-sm:           4px;
+  --radius-md:           6px;
+  --radius-lg:           10px;
+  --radius-xl:           14px;
+  --radius-pill:         9999px;
+
+  /* Shadows */
+  --shadow-xs:           0 1px 4px rgba(139, 128, 249, 0.10);
+  --shadow-sm:           0 2px 12px rgba(139, 128, 249, 0.18);
+  --shadow-md:           0 4px 24px rgba(139, 128, 249, 0.25);
+  --shadow-lg:           0 8px 40px rgba(139, 128, 249, 0.35);
+  --shadow-glow-brand:   0 0 20px rgba(139, 128, 249, 0.30);
+  --shadow-glow-accent:  0 0 20px rgba(251, 146, 60, 0.30);
+
+  /* Fonts */
+  --font-display:        'Orbitron', sans-serif;
+  --font-mono:           'Share Tech Mono', monospace;
+  --font-body:           'DM Sans', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ─────────────────────────────────────────────
+   BASE STYLES
+───────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
 }

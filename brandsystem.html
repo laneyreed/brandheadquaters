@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Build with Shannon — Brand System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#0D0B22;min-height:100%;}
+.page{padding:24px 16px 48px;display:flex;flex-direction:column;gap:32px;font-family:'Share Tech Mono',monospace;max-width:900px;margin:0 auto;}
+
+/* header */
+.header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid rgba(139,128,249,0.15);}
+.header-text{display:flex;flex-direction:column;gap:4px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;}
+.header-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(139,128,249,0.5);letter-spacing:3px;text-transform:uppercase;}
+
+/* nav tabs */
+.tabs{display:flex;gap:0;background:#0D0B22;border-radius:8px;border:1px solid rgba(139,128,249,0.2);overflow:hidden;flex-wrap:wrap;}
+.tab{padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(200,196,255,0.35);cursor:pointer;border:none;background:none;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.tab.active{background:rgba(139,128,249,0.18);color:#C8C4FF;}
+
+/* section */
+.sec{display:none;flex-direction:column;gap:20px;}
+.sec.active{display:flex;}
+
+/* card */
+.card{background:#0D0B22;border-radius:10px;padding:20px;border:1px solid rgba(139,128,249,0.12);display:flex;flex-direction:column;gap:14px;}
+.card-label{font-size:9px;letter-spacing:2px;color:rgba(139,128,249,0.4);text-transform:uppercase;}
+
+/* code chip */
+.chip{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:10px;background:rgba(139,128,249,0.1);border:1px solid rgba(139,128,249,0.2);border-radius:4px;padding:2px 8px;color:#C8C4FF;cursor:pointer;transition:background .15s;}
+.chip:hover{background:rgba(139,128,249,0.22);}
+.chip.orange{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.25);color:#FB923C;}
+
+/* ── COLORS ── */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;}
+.swatch-item{display:flex;flex-direction:column;gap:6px;}
+.swatch-block{height:52px;border-radius:8px;display:flex;align-items:flex-end;padding:5px 7px;}
+.swatch-name{font-size:9px;letter-spacing:1.5px;color:rgba(200,196,255,0.5);text-transform:uppercase;}
+.swatch-hex{font-size:9px;color:rgba(200,196,255,0.3);letter-spacing:1px;}
+.swatch-var{font-size:8px;color:rgba(139,128,249,0.45);letter-spacing:.5px;font-family:'Share Tech Mono',monospace;}
+
+/* ── TYPOGRAPHY ── */
+.type-row{display:flex;flex-direction:column;gap:6px;padding-bottom:14px;border-bottom:1px solid rgba(139,128,249,0.08);}
+.type-row:last-child{border-bottom:none;padding-bottom:0;}
+.type-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.type-sample-d{font-family:'Orbitron',sans-serif;font-weight:700;color:#fff;line-height:1.1;text-transform:uppercase;}
+.type-sample-m{font-family:'Share Tech Mono',monospace;color:#8B80F9;line-height:1.4;}
+.type-sample-b{font-family:'DM Sans',sans-serif;color:rgba(200,196,255,0.8);line-height:1.6;}
+
+/* ── SPACING ── */
+.space-grid{display:flex;flex-direction:column;gap:8px;}
+.space-row{display:flex;align-items:center;gap:12px;}
+.space-bar{background:linear-gradient(90deg,#8B80F9,rgba(139,128,249,0.3));border-radius:2px;height:8px;flex-shrink:0;}
+.space-label{font-size:10px;color:rgba(200,196,255,0.6);letter-spacing:1px;min-width:140px;}
+.space-val{font-size:9px;color:rgba(139,128,249,0.5);letter-spacing:1px;}
+
+/* ── RADIUS ── */
+.radius-grid{display:flex;gap:12px;flex-wrap:wrap;}
+.radius-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.radius-block{background:rgba(139,128,249,0.12);border:1px solid rgba(139,128,249,0.25);width:64px;height:64px;}
+.radius-meta{font-size:9px;color:rgba(200,196,255,0.4);letter-spacing:1px;text-align:center;line-height:1.6;}
+
+/* ── SHADOWS ── */
+.shadow-grid{display:flex;gap:14px;flex-wrap:wrap;}
+.shadow-item{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.shadow-block{width:80px;height:52px;background:#1A1744;border-radius:8px;}
+.shadow-meta{font-size:9px;color:rgba(200,196,255,0.4);letter-spacing:1px;text-align:center;line-height:1.6;}
+
+/* ── GRID ── */
+.grid-demo{width:100%;height:60px;position:relative;background:rgba(139,128,249,0.04);border-radius:6px;overflow:hidden;}
+.grid-col{position:absolute;top:0;bottom:0;border-left:1px solid rgba(251,146,60,0.15);}
+
+/* ── MOTION ── */
+.motion-row{display:flex;flex-direction:column;gap:6px;padding-bottom:12px;border-bottom:1px solid rgba(139,128,249,0.08);}
+.motion-row:last-child{border-bottom:none;padding-bottom:0;}
+.motion-label{font-size:10px;color:#C8C4FF;letter-spacing:1px;}
+.motion-val{font-size:9px;color:rgba(139,128,249,0.5);letter-spacing:1px;}
+.motion-demo{height:6px;background:rgba(139,128,249,0.15);border-radius:3px;overflow:hidden;position:relative;cursor:pointer;}
+.motion-fill{height:100%;background:linear-gradient(90deg,#8B80F9,#FB923C);border-radius:3px;width:0%;transition-property:width;}
+
+/* ── COMPONENTS ── */
+.comp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;}
+.btn{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:6px;padding:10px 20px;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:linear-gradient(135deg,#8B80F9,#5752C8);color:#fff;box-shadow:0 0 20px rgba(139,128,249,0.3);}
+.btn-primary:hover{box-shadow:0 0 30px rgba(139,128,249,0.5);transform:translateY(-1px);}
+.btn-secondary{background:transparent;color:#8B80F9;border:1px solid rgba(139,128,249,0.4);}
+.btn-secondary:hover{background:rgba(139,128,249,0.1);border-color:#8B80F9;}
+.btn-accent{background:linear-gradient(135deg,#FB923C,#e07020);color:#fff;box-shadow:0 0 20px rgba(251,146,60,0.25);}
+.btn-accent:hover{box-shadow:0 0 30px rgba(251,146,60,0.45);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:rgba(200,196,255,0.5);border:1px solid rgba(200,196,255,0.12);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(139,128,249,0.12);border:1px solid rgba(139,128,249,0.3);border-radius:100px;padding:4px 12px;font-family:'Share Tech Mono',monospace;font-size:9px;color:#C8C4FF;letter-spacing:2px;text-transform:uppercase;}
+.pill-dot{width:5px;height:5px;background:#FB923C;border-radius:50%;}
+.pill-green{background:rgba(29,158,117,0.12);border-color:rgba(29,158,117,0.3);color:#5DCAA5;}
+.pill-green .pill-dot{background:#1D9E75;}
+.pill-orange{background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.3);color:#FB923C;}
+.pill-orange .pill-dot{background:#FB923C;}
+.inp{background:rgba(26,23,68,0.8);border:1px solid rgba(139,128,249,0.25);border-radius:6px;padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:11px;color:#C8C4FF;letter-spacing:1px;width:200px;outline:none;transition:border .2s;}
+.inp:focus{border-color:#8B80F9;box-shadow:0 0 0 3px rgba(139,128,249,0.1);}
+.inp::placeholder{color:rgba(200,196,255,0.2);}
+.ui-card{background:rgba(26,23,68,0.6);border:1px solid rgba(139,128,249,0.15);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;width:200px;}
+.ui-card-tag{font-family:'Share Tech Mono',monospace;font-size:9px;color:#FB923C;letter-spacing:2px;text-transform:uppercase;}
+.ui-card-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;}
+.ui-card-body{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(200,196,255,0.5);line-height:1.5;}
+.ui-card-rule{height:1px;background:linear-gradient(90deg,#8B80F9,#FB923C 50%,transparent);}
+.ui-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(139,128,249,0.3) 30%,rgba(251,146,60,0.3) 70%,transparent);width:100%;}
+.toast{display:inline-flex;align-items:center;gap:10px;background:#1A1744;border:1px solid rgba(139,128,249,0.3);border-radius:8px;padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:10px;color:#C8C4FF;letter-spacing:1px;}
+.toast-icon{width:6px;height:6px;background:#FB923C;border-radius:50%;flex-shrink:0;}
+.corner-mark{position:relative;padding:14px;}
+.corner-mark::before,.corner-mark::after{content:'';position:absolute;width:10px;height:10px;}
+.corner-mark::before{top:0;left:0;border-top:1.5px solid #FB923C;border-left:1.5px solid #FB923C;}
+.corner-mark::after{bottom:0;right:0;border-bottom:1.5px solid #FB923C;border-right:1.5px solid #FB923C;}
+
+/* copy toast */
+.copied{position:fixed;bottom:20px;right:20px;background:#1A1744;border:1px solid #8B80F9;border-radius:6px;padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:10px;color:#8B80F9;letter-spacing:2px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
+.copied.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <svg width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="12" fill="#1A1744"/>
+      <line x1="0" y1="16" x2="64" y2="16" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="0" y1="32" x2="64" y2="32" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="0" y1="48" x2="64" y2="48" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="16" y1="0" x2="16" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="32" y1="0" x2="32" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <line x1="48" y1="0" x2="48" y2="64" stroke="#FB923C" stroke-width="0.5" opacity="0.22"/>
+      <rect x="1" y="1" width="7" height="1.5" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="1" y="1" width="1.5" height="7" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="56" y="1" width="7" height="1.5" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="61.5" y="1" width="1.5" height="7" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="1" y="61.5" width="7" height="1.5" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="1" y="56" width="1.5" height="7" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="56" y="61.5" width="7" height="1.5" rx="1" fill="#FB923C" opacity="0.5"/>
+      <rect x="61.5" y="56" width="1.5" height="7" rx="1" fill="#FB923C" opacity="0.5"/>
+      <path d="M46,19 C46,11 16,11 16,25 C16,35 48,35 48,45 C48,57 18,57 18,50" fill="none" stroke="#8B80F9" stroke-width="7.5" stroke-linecap="round"/>
+      <circle cx="49" cy="13" r="5.5" fill="#FB923C"/>
+    </svg>
+    <div class="header-text">
+      <div class="header-title">Brand System</div>
+      <div class="header-sub">// build_with_shannon · design tokens v1.0</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="show('colors',this)">Colors</button>
+    <button class="tab" onclick="show('type',this)">Typography</button>
+    <button class="tab" onclick="show('space',this)">Spacing</button>
+    <button class="tab" onclick="show('radius',this)">Radius</button>
+    <button class="tab" onclick="show('shadow',this)">Shadows</button>
+    <button class="tab" onclick="show('motion',this)">Motion</button>
+    <button class="tab" onclick="show('components',this)">Components</button>
+    <button class="tab" onclick="show('css',this)">CSS Vars</button>
+  </div>
+
+  <!-- ══ COLORS ══ -->
+  <div class="sec active" id="sec-colors">
+    <div class="card">
+      <div class="card-label">primary palette</div>
+      <div class="swatch-grid">
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;"><span style="font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">BASE</span></div><div class="swatch-name">Space Black</div><div class="swatch-hex">#0D0B22</div><div class="swatch-var">--color-base</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#1A1744;"><span style="font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">BG</span></div><div class="swatch-name">Deep Indigo</div><div class="swatch-hex">#1A1744</div><div class="swatch-var">--color-bg</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#251F5C;"><span style="font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">SURFACE</span></div><div class="swatch-name">Midnight</div><div class="swatch-hex">#251F5C</div><div class="swatch-var">--color-surface</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#8B80F9;"><span style="font-size:8px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">BRAND</span></div><div class="swatch-name">Brand Purple</div><div class="swatch-hex">#8B80F9</div><div class="swatch-var">--color-brand</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#5752C8;"><span style="font-size:8px;color:rgba(255,255,255,0.5);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">MID</span></div><div class="swatch-name">Mid Violet</div><div class="swatch-hex">#5752C8</div><div class="swatch-var">--color-brand-mid</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#C8C4FF;"><span style="font-size:8px;color:rgba(26,23,68,0.6);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">LIGHT</span></div><div class="swatch-name">Lilac</div><div class="swatch-hex">#C8C4FF</div><div class="swatch-var">--color-brand-light</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#FB923C;"><span style="font-size:8px;color:rgba(255,255,255,0.7);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">SPARK</span></div><div class="swatch-name">Spark Orange</div><div class="swatch-hex">#FB923C</div><div class="swatch-var">--color-accent</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#E07020;"><span style="font-size:8px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;letter-spacing:1px;">DEEP</span></div><div class="swatch-name">Deep Spark</div><div class="swatch-hex">#E07020</div><div class="swatch-var">--color-accent-deep</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">text colors</div>
+      <div class="swatch-grid">
+        <div class="swatch-item"><div class="swatch-block" style="background:rgba(255,255,255,1);border:1px solid rgba(139,128,249,0.15);"><span style="font-size:8px;color:rgba(26,23,68,0.5);font-family:'Share Tech Mono',monospace;">100%</span></div><div class="swatch-name">Primary</div><div class="swatch-var">--text-primary</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:rgba(200,196,255,0.85);border:1px solid rgba(139,128,249,0.15);"><span style="font-size:8px;color:rgba(26,23,68,0.5);font-family:'Share Tech Mono',monospace;">85%</span></div><div class="swatch-name">Secondary</div><div class="swatch-var">--text-secondary</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:rgba(200,196,255,0.45);border:1px solid rgba(139,128,249,0.15);"><span style="font-size:8px;color:rgba(255,255,255,0.4);font-family:'Share Tech Mono',monospace;">45%</span></div><div class="swatch-name">Muted</div><div class="swatch-var">--text-muted</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#8B80F9;"><span style="font-size:8px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;">BRAND</span></div><div class="swatch-name">Brand</div><div class="swatch-var">--text-brand</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#FB923C;"><span style="font-size:8px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;">ACCENT</span></div><div class="swatch-name">Accent</div><div class="swatch-var">--text-accent</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">border colors</div>
+      <div class="swatch-grid">
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;border:1px solid rgba(139,128,249,0.12);"></div><div class="swatch-name">Subtle</div><div class="swatch-var">--border-subtle</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;border:1px solid rgba(139,128,249,0.25);"></div><div class="swatch-name">Default</div><div class="swatch-var">--border-default</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;border:1px solid rgba(139,128,249,0.5);"></div><div class="swatch-name">Strong</div><div class="swatch-var">--border-strong</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;border:1px solid #8B80F9;"></div><div class="swatch-name">Brand</div><div class="swatch-var">--border-brand</div></div>
+        <div class="swatch-item"><div class="swatch-block" style="background:#0D0B22;border:1px solid rgba(251,146,60,0.45);"></div><div class="swatch-name">Accent</div><div class="swatch-var">--border-accent</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">gradient recipes — click to copy</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="height:36px;border-radius:6px;background:linear-gradient(135deg,#8B80F9,#5752C8);"></div>
+        <div class="chip">background: linear-gradient(135deg, var(--color-brand), var(--color-brand-mid))</div>
+        <div style="height:36px;border-radius:6px;background:linear-gradient(90deg,#8B80F9 0%,#FB923C 50%,transparent 100%);"></div>
+        <div class="chip">background: linear-gradient(90deg, var(--color-brand), var(--color-accent) 50%, transparent)</div>
+        <div style="height:36px;border-radius:6px;background:linear-gradient(135deg,#FB923C,#e07020);"></div>
+        <div class="chip orange">background: linear-gradient(135deg, var(--color-accent), var(--color-accent-deep))</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TYPOGRAPHY ══ -->
+  <div class="sec" id="sec-type">
+    <div class="card">
+      <div class="card-label">typefaces</div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:14px;background:rgba(139,128,249,0.06);border-radius:8px;border-left:2px solid #8B80F9;">
+          <div style="font-size:9px;letter-spacing:2px;color:#8B80F9;margin-bottom:6px;font-family:'Share Tech Mono',monospace;text-transform:uppercase;">Display — Orbitron</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;">Build with Shannon</div>
+          <div style="font-size:9px;color:rgba(200,196,255,0.35);margin-top:6px;font-family:'Share Tech Mono',monospace;">Headlines · Logo · CTAs · Section titles</div>
+        </div>
+        <div style="padding:14px;background:rgba(251,146,60,0.06);border-radius:8px;border-left:2px solid #FB923C;">
+          <div style="font-size:9px;letter-spacing:2px;color:#FB923C;margin-bottom:6px;font-family:'Share Tech Mono',monospace;text-transform:uppercase;">Mono — Share Tech Mono</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:16px;color:#C8C4FF;letter-spacing:3px;">// build_with_shannon</div>
+          <div style="font-size:9px;color:rgba(200,196,255,0.35);margin-top:6px;font-family:'Share Tech Mono',monospace;">Labels · Tags · Code · Nav items · Metadata</div>
+        </div>
+        <div style="padding:14px;background:rgba(200,196,255,0.04);border-radius:8px;border-left:2px solid rgba(200,196,255,0.2);">
+          <div style="font-size:9px;letter-spacing:2px;color:rgba(200,196,255,0.4);margin-bottom:6px;font-family:'Share Tech Mono',monospace;text-transform:uppercase;">Body — DM Sans</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:15px;color:rgba(200,196,255,0.75);line-height:1.6;">Every day I build something new with AI — and show you exactly how I did it. No gatekeeping, no hype.</div>
+          <div style="font-size:9px;color:rgba(200,196,255,0.35);margin-top:6px;font-family:'Share Tech Mono',monospace;">Body copy · Descriptions · Paragraphs · Captions</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">type scale</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="type-row"><div class="type-sample-d" style="font-size:48px;">HERO</div><div class="type-meta"><span class="chip">font-size: 48px</span><span class="chip">Orbitron 900</span><span class="chip">letter-spacing: 2px</span></div></div>
+        <div class="type-row"><div class="type-sample-d" style="font-size:32px;">SECTION TITLE</div><div class="type-meta"><span class="chip">font-size: 32px</span><span class="chip">Orbitron 700</span></div></div>
+        <div class="type-row"><div class="type-sample-d" style="font-size:22px;">Card Heading</div><div class="type-meta"><span class="chip">font-size: 22px</span><span class="chip">Orbitron 700</span></div></div>
+        <div class="type-row"><div class="type-sample-m" style="font-size:13px;">// section label</div><div class="type-meta"><span class="chip">font-size: 13px</span><span class="chip">Share Tech Mono</span><span class="chip">letter-spacing: 3px</span></div></div>
+        <div class="type-row"><div class="type-sample-m" style="font-size:11px;color:rgba(200,196,255,0.4);">METADATA · TAG · LABEL</div><div class="type-meta"><span class="chip">font-size: 11px</span><span class="chip">Share Tech Mono</span><span class="chip">uppercase</span></div></div>
+        <div class="type-row"><div class="type-sample-b" style="font-size:16px;">Body text reads clean and accessible at 16px with comfortable line height.</div><div class="type-meta"><span class="chip">font-size: 16px</span><span class="chip">DM Sans 400</span><span class="chip">line-height: 1.7</span></div></div>
+        <div class="type-row"><div class="type-sample-b" style="font-size:13px;color:rgba(200,196,255,0.5);">Small supporting text and captions live here.</div><div class="type-meta"><span class="chip">font-size: 13px</span><span class="chip">DM Sans 400</span><span class="chip">--text-muted</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SPACING ══ -->
+  <div class="sec" id="sec-space">
+    <div class="card">
+      <div class="card-label">spacing scale — base 4px</div>
+      <div class="space-grid">
+        <div class="space-row"><div class="space-bar" style="width:4px;"></div><div class="space-label">--space-1 · 4px</div><div class="space-val">micro</div></div>
+        <div class="space-row"><div class="space-bar" style="width:8px;"></div><div class="space-label">--space-2 · 8px</div><div class="space-val">tight</div></div>
+        <div class="space-row"><div class="space-bar" style="width:12px;"></div><div class="space-label">--space-3 · 12px</div><div class="space-val">compact</div></div>
+        <div class="space-row"><div class="space-bar" style="width:16px;"></div><div class="space-label">--space-4 · 16px</div><div class="space-val">base</div></div>
+        <div class="space-row"><div class="space-bar" style="width:24px;"></div><div class="space-label">--space-6 · 24px</div><div class="space-val">comfortable</div></div>
+        <div class="space-row"><div class="space-bar" style="width:32px;"></div><div class="space-label">--space-8 · 32px</div><div class="space-val">relaxed</div></div>
+        <div class="space-row"><div class="space-bar" style="width:48px;"></div><div class="space-label">--space-12 · 48px</div><div class="space-val">section gap</div></div>
+        <div class="space-row"><div class="space-bar" style="width:64px;"></div><div class="space-label">--space-16 · 64px</div><div class="space-val">section pad</div></div>
+        <div class="space-row"><div class="space-bar" style="width:96px;"></div><div class="space-label">--space-24 · 96px</div><div class="space-val">hero pad</div></div>
+        <div class="space-row"><div class="space-bar" style="width:128px;"></div><div class="space-label">--space-32 · 128px</div><div class="space-val">page margin</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">layout grid</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="grid-demo">
+          <div class="grid-col" style="left:5%;"></div><div class="grid-col" style="left:17%;"></div><div class="grid-col" style="left:29%;"></div><div class="grid-col" style="left:41%;"></div><div class="grid-col" style="left:53%;"></div><div class="grid-col" style="left:65%;"></div><div class="grid-col" style="left:77%;"></div><div class="grid-col" style="left:89%;"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(139,128,249,0.3);text-transform:uppercase;">12 columns · 24px gutter · max-width 1280px</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><span class="chip">max-width: 1280px</span><span class="chip">columns: 12</span><span class="chip">gutter: 24px</span><span class="chip">margin: 48px</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RADIUS ══ -->
+  <div class="sec" id="sec-radius">
+    <div class="card">
+      <div class="card-label">border radius scale</div>
+      <div class="radius-grid">
+        <div class="radius-item"><div class="radius-block" style="border-radius:2px;"></div><div class="radius-meta">--radius-xs<br>2px<br>micro tag</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:4px;"></div><div class="radius-meta">--radius-sm<br>4px<br>chip / badge</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:6px;"></div><div class="radius-meta">--radius-md<br>6px<br>button</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:10px;"></div><div class="radius-meta">--radius-lg<br>10px<br>card</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:14px;"></div><div class="radius-meta">--radius-xl<br>14px<br>panel</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:32px;width:64px;height:32px;"></div><div class="radius-meta">--radius-pill<br>9999px<br>pill / tag</div></div>
+        <div class="radius-item"><div class="radius-block" style="border-radius:50%;width:64px;"></div><div class="radius-meta">--radius-full<br>50%<br>avatar / dot</div></div>
+        <div class="radius-item" style="opacity:0.5;"><div class="radius-block" style="border-radius:0;"></div><div class="radius-meta">--radius-none<br>0px<br>sharp edge</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SHADOWS ══ -->
+  <div class="sec" id="sec-shadow">
+    <div class="card">
+      <div class="card-label">shadow system — brand-colored glows</div>
+      <div class="shadow-grid">
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 1px 4px rgba(139,128,249,0.1);"></div><div class="shadow-meta">--shadow-xs<br>subtle lift</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 2px 12px rgba(139,128,249,0.18);"></div><div class="shadow-meta">--shadow-sm<br>card rest</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 4px 24px rgba(139,128,249,0.25);"></div><div class="shadow-meta">--shadow-md<br>card hover</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 8px 40px rgba(139,128,249,0.35);"></div><div class="shadow-meta">--shadow-lg<br>modal / hero</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 0 20px rgba(139,128,249,0.3);"></div><div class="shadow-meta">--glow-brand<br>btn primary</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 0 20px rgba(251,146,60,0.3);"></div><div class="shadow-meta">--glow-accent<br>btn accent</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 0 0 2px rgba(139,128,249,0.5);"></div><div class="shadow-meta">--ring-brand<br>focus ring</div></div>
+        <div class="shadow-item"><div class="shadow-block" style="box-shadow:0 0 0 2px rgba(251,146,60,0.5);"></div><div class="shadow-meta">--ring-accent<br>active state</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">corner mark — signature detail</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div class="corner-mark" style="background:rgba(139,128,249,0.05);border-radius:6px;width:120px;height:60px;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(200,196,255,0.3);letter-spacing:2px;text-transform:uppercase;">any panel</span></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(200,196,255,0.4);letter-spacing:1px;line-height:1.8;">Use orange corner marks on hero sections,<br>feature cards, and image containers.<br>Matches the banner and thumbnail system.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MOTION ══ -->
+  <div class="sec" id="sec-motion">
+    <div class="card">
+      <div class="card-label">easing curves — click bar to preview</div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="motion-row"><div class="motion-label">--ease-out · UI transitions</div><div class="motion-val">cubic-bezier(0.0, 0.0, 0.2, 1.0)</div><div class="motion-demo" onclick="animate(this)"><div class="motion-fill" style="transition-timing-function:cubic-bezier(0,0,0.2,1);transition-duration:400ms;"></div></div></div>
+        <div class="motion-row"><div class="motion-label">--ease-in-out · page transitions</div><div class="motion-val">cubic-bezier(0.4, 0.0, 0.2, 1.0)</div><div class="motion-demo" onclick="animate(this)"><div class="motion-fill" style="transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:500ms;"></div></div></div>
+        <div class="motion-row"><div class="motion-label">--ease-spring · hover effects</div><div class="motion-val">cubic-bezier(0.34, 1.56, 0.64, 1.0)</div><div class="motion-demo" onclick="animate(this)"><div class="motion-fill" style="transition-timing-function:cubic-bezier(0.34,1.56,0.64,1);transition-duration:600ms;"></div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">duration tokens</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="motion-row"><div class="motion-label">--duration-fast · 120ms</div><div class="motion-val">hover color / opacity flips</div></div>
+        <div class="motion-row"><div class="motion-label">--duration-base · 200ms</div><div class="motion-val">button states / border changes</div></div>
+        <div class="motion-row"><div class="motion-label">--duration-slow · 350ms</div><div class="motion-val">card hover / transform / shadow</div></div>
+        <div class="motion-row"><div class="motion-label">--duration-page · 500ms</div><div class="motion-val">page transitions / reveals</div></div>
+        <div class="motion-row"><div class="motion-label">--duration-glow · 1600ms</div><div class="motion-val">pulse / ambient animations</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">animation rules</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(200,196,255,0.5);line-height:2;letter-spacing:.5px;">
+        <div style="color:#FB923C;margin-bottom:4px;">// always animate only transform + opacity</div>
+        <div>✓ &nbsp;translateY(-2px) on card hover</div>
+        <div>✓ &nbsp;opacity fade-in on page load (staggered)</div>
+        <div>✓ &nbsp;scale(1.04) on button hover</div>
+        <div>✓ &nbsp;box-shadow glow pulse on active elements</div>
+        <div style="color:rgba(200,196,255,0.25);margin-top:8px;">✗ &nbsp;never animate layout properties (width/height)</div>
+        <div style="color:rgba(200,196,255,0.25);">✗ &nbsp;never autoplay non-looping animations</div>
+        <div style="color:rgba(200,196,255,0.25);">✗ &nbsp;respect prefers-reduced-motion always</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COMPONENTS ══ -->
+  <div class="sec" id="sec-components">
+    <div class="card"><div class="card-label">buttons</div><div class="comp-row"><button class="btn btn-primary">Get Started</button><button class="btn btn-secondary">Learn More</button><button class="btn btn-accent">Watch Now</button><button class="btn btn-ghost">// skip intro</button></div></div>
+    <div class="card"><div class="card-label">pills / badges</div><div class="comp-row" style="align-items:center;"><div class="pill"><span class="pill-dot"></span>new drop</div><div class="pill pill-green"><span class="pill-dot"></span>live now</div><div class="pill pill-orange"><span class="pill-dot"></span>day 47</div><div class="pill" style="background:rgba(26,23,68,0.5);border-color:rgba(200,196,255,0.15);color:rgba(200,196,255,0.4);"><span class="pill-dot" style="background:rgba(200,196,255,0.2);"></span>coming soon</div></div></div>
+    <div class="card"><div class="card-label">input field</div><div class="comp-row"><input class="inp" type="text" placeholder="// enter email..."/><button class="btn btn-primary" style="font-size:10px;padding:10px 16px;">Subscribe</button></div></div>
+    <div class="card">
+      <div class="card-label">content card</div>
+      <div class="comp-row">
+        <div class="ui-card"><div class="ui-card-tag">// tutorial</div><div class="ui-card-rule"></div><div class="ui-card-title">Build a SaaS in 2hrs</div><div class="ui-card-body">Full-stack AI-assisted build from zero to deployed.</div><button class="btn btn-ghost" style="font-size:9px;padding:6px 12px;align-self:flex-start;">Watch →</button></div>
+        <div class="ui-card"><div class="ui-card-tag">// breakdown</div><div class="ui-card-rule"></div><div class="ui-card-title">Claude vs Copilot</div><div class="ui-card-body">Which AI coding tool actually ships faster in 2025?</div><button class="btn btn-ghost" style="font-size:9px;padding:6px 12px;align-self:flex-start;">Watch →</button></div>
+      </div>
+    </div>
+    <div class="card"><div class="card-label">toast notification</div><div class="toast"><span class="toast-icon"></span>New build dropped — day 47 is live</div></div>
+    <div class="card"><div class="card-label">divider</div><div style="display:flex;flex-direction:column;gap:8px;"><div class="ui-divider"></div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(139,128,249,0.35);letter-spacing:2px;text-transform:uppercase;text-align:center;">section break</div><div class="ui-divider"></div></div></div>
+  </div>
+
+  <!-- ══ CSS VARS ══ -->
+  <div class="sec" id="sec-css">
+    <div class="card">
+      <div class="card-label">copy this into your :root — all tokens in one block</div>
+      <div style="background:#0a0818;border-radius:8px;padding:16px;border:1px solid rgba(139,128,249,0.15);overflow-x:auto;">
+        <pre style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(200,196,255,0.7);line-height:2;letter-spacing:.3px;white-space:pre;">
+<span style="color:#8B80F9;">:root</span> {
+
+  <span style="color:#FB923C;">/* ── Colors ── */</span>
+  <span style="color:#C8C4FF;">--color-base</span>:          <span style="color:#5DCAA5;">#0D0B22</span>;
+  <span style="color:#C8C4FF;">--color-bg</span>:            <span style="color:#5DCAA5;">#1A1744</span>;
+  <span style="color:#C8C4FF;">--color-surface</span>:       <span style="color:#5DCAA5;">#251F5C</span>;
+  <span style="color:#C8C4FF;">--color-brand</span>:         <span style="color:#5DCAA5;">#8B80F9</span>;
+  <span style="color:#C8C4FF;">--color-brand-mid</span>:     <span style="color:#5DCAA5;">#5752C8</span>;
+  <span style="color:#C8C4FF;">--color-brand-light</span>:   <span style="color:#5DCAA5;">#C8C4FF</span>;
+  <span style="color:#C8C4FF;">--color-accent</span>:        <span style="color:#5DCAA5;">#FB923C</span>;
+  <span style="color:#C8C4FF;">--color-accent-deep</span>:   <span style="color:#5DCAA5;">#E07020</span>;
+
+  <span style="color:#FB923C;">/* ── Text ── */</span>
+  <span style="color:#C8C4FF;">--text-primary</span>:        <span style="color:#5DCAA5;">rgba(255,255,255,1)</span>;
+  <span style="color:#C8C4FF;">--text-secondary</span>:      <span style="color:#5DCAA5;">rgba(200,196,255,0.85)</span>;
+  <span style="color:#C8C4FF;">--text-muted</span>:          <span style="color:#5DCAA5;">rgba(200,196,255,0.45)</span>;
+  <span style="color:#C8C4FF;">--text-brand</span>:          <span style="color:#5DCAA5;">#8B80F9</span>;
+  <span style="color:#C8C4FF;">--text-accent</span>:         <span style="color:#5DCAA5;">#FB923C</span>;
+
+  <span style="color:#FB923C;">/* ── Borders ── */</span>
+  <span style="color:#C8C4FF;">--border-subtle</span>:       <span style="color:#5DCAA5;">rgba(139,128,249,0.12)</span>;
+  <span style="color:#C8C4FF;">--border-default</span>:      <span style="color:#5DCAA5;">rgba(139,128,249,0.25)</span>;
+  <span style="color:#C8C4FF;">--border-strong</span>:       <span style="color:#5DCAA5;">rgba(139,128,249,0.5)</span>;
+  <span style="color:#C8C4FF;">--border-brand</span>:        <span style="color:#5DCAA5;">#8B80F9</span>;
+  <span style="color:#C8C4FF;">--border-accent</span>:       <span style="color:#5DCAA5;">rgba(251,146,60,0.45)</span>;
+
+  <span style="color:#FB923C;">/* ── Spacing ── */</span>
+  <span style="color:#C8C4FF;">--space-1</span>: <span style="color:#5DCAA5;">4px</span>;   <span style="color:#C8C4FF;">--space-2</span>: <span style="color:#5DCAA5;">8px</span>;
+  <span style="color:#C8C4FF;">--space-3</span>: <span style="color:#5DCAA5;">12px</span>;  <span style="color:#C8C4FF;">--space-4</span>: <span style="color:#5DCAA5;">16px</span>;
+  <span style="color:#C8C4FF;">--space-6</span>: <span style="color:#5DCAA5;">24px</span>;  <span style="color:#C8C4FF;">--space-8</span>: <span style="color:#5DCAA5;">32px</span>;
+  <span style="color:#C8C4FF;">--space-12</span>: <span style="color:#5DCAA5;">48px</span>; <span style="color:#C8C4FF;">--space-16</span>: <span style="color:#5DCAA5;">64px</span>;
+  <span style="color:#C8C4FF;">--space-24</span>: <span style="color:#5DCAA5;">96px</span>; <span style="color:#C8C4FF;">--space-32</span>: <span style="color:#5DCAA5;">128px</span>;
+
+  <span style="color:#FB923C;">/* ── Border Radius ── */</span>
+  <span style="color:#C8C4FF;">--radius-xs</span>:   <span style="color:#5DCAA5;">2px</span>;
+  <span style="color:#C8C4FF;">--radius-sm</span>:   <span style="color:#5DCAA5;">4px</span>;
+  <span style="color:#C8C4FF;">--radius-md</span>:   <span style="color:#5DCAA5;">6px</span>;
+  <span style="color:#C8C4FF;">--radius-lg</span>:   <span style="color:#5DCAA5;">10px</span>;
+  <span style="color:#C8C4FF;">--radius-xl</span>:   <span style="color:#5DCAA5;">14px</span>;
+  <span style="color:#C8C4FF;">--radius-pill</span>: <span style="color:#5DCAA5;">9999px</span>;
+  <span style="color:#C8C4FF;">--radius-full</span>: <span style="color:#5DCAA5;">50%</span>;
+
+  <span style="color:#FB923C;">/* ── Shadows &amp; Glows ── */</span>
+  <span style="color:#C8C4FF;">--shadow-xs</span>:    <span style="color:#5DCAA5;">0 1px 4px rgba(139,128,249,0.10)</span>;
+  <span style="color:#C8C4FF;">--shadow-sm</span>:    <span style="color:#5DCAA5;">0 2px 12px rgba(139,128,249,0.18)</span>;
+  <span style="color:#C8C4FF;">--shadow-md</span>:    <span style="color:#5DCAA5;">0 4px 24px rgba(139,128,249,0.25)</span>;
+  <span style="color:#C8C4FF;">--shadow-lg</span>:    <span style="color:#5DCAA5;">0 8px 40px rgba(139,128,249,0.35)</span>;
+  <span style="color:#C8C4FF;">--glow-brand</span>:   <span style="color:#5DCAA5;">0 0 20px rgba(139,128,249,0.30)</span>;
+  <span style="color:#C8C4FF;">--glow-accent</span>:  <span style="color:#5DCAA5;">0 0 20px rgba(251,146,60,0.30)</span>;
+  <span style="color:#C8C4FF;">--ring-brand</span>:   <span style="color:#5DCAA5;">0 0 0 2px rgba(139,128,249,0.50)</span>;
+  <span style="color:#C8C4FF;">--ring-accent</span>:  <span style="color:#5DCAA5;">0 0 0 2px rgba(251,146,60,0.50)</span>;
+
+  <span style="color:#FB923C;">/* ── Motion ── */</span>
+  <span style="color:#C8C4FF;">--ease-out</span>:      <span style="color:#5DCAA5;">cubic-bezier(0.0, 0.0, 0.2, 1.0)</span>;
+  <span style="color:#C8C4FF;">--ease-in-out</span>:   <span style="color:#5DCAA5;">cubic-bezier(0.4, 0.0, 0.2, 1.0)</span>;
+  <span style="color:#C8C4FF;">--ease-spring</span>:   <span style="color:#5DCAA5;">cubic-bezier(0.34, 1.56, 0.64, 1.0)</span>;
+  <span style="color:#C8C4FF;">--duration-fast</span>: <span style="color:#5DCAA5;">120ms</span>;
+  <span style="color:#C8C4FF;">--duration-base</span>: <span style="color:#5DCAA5;">200ms</span>;
+  <span style="color:#C8C4FF;">--duration-slow</span>: <span style="color:#5DCAA5;">350ms</span>;
+  <span style="color:#C8C4FF;">--duration-page</span>: <span style="color:#5DCAA5;">500ms</span>;
+  <span style="color:#C8C4FF;">--duration-glow</span>: <span style="color:#5DCAA5;">1600ms</span>;
+
+  <span style="color:#FB923C;">/* ── Typography ── */</span>
+  <span style="color:#C8C4FF;">--font-display</span>: <span style="color:#5DCAA5;">'Orbitron', sans-serif</span>;
+  <span style="color:#C8C4FF;">--font-mono</span>:    <span style="color:#5DCAA5;">'Share Tech Mono', monospace</span>;
+  <span style="color:#C8C4FF;">--font-body</span>:    <span style="color:#5DCAA5;">'DM Sans', sans-serif</span>;
+}</pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="copied" id="copied">// copied</div>
+
+<script>
+function show(id, btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function animate(el){
+  const fill=el.querySelector('.motion-fill');
+  fill.style.transitionDuration='0ms';
+  fill.style.width='0%';
+  setTimeout(()=>{fill.style.width='100%';setTimeout(()=>{fill.style.width='0%';},900);},50);
+}
+document.querySelectorAll('.chip').forEach(c=>{
+  c.title='Click to copy';
+  c.onclick=()=>{
+    navigator.clipboard.writeText(c.textContent.trim()).catch(()=>{});
+    const t=document.getElementById('copied');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1500);
+  };
+});
+</script>
+</body>
+</html>
