@@ -1,37 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Build With Shannon — Brand Headquarters
 
-## Getting Started
+A premium personal brand website for Shannon as a builder, teacher, and systems-focused creator working with AI.
 
-First, run the development server:
+**Stack:** Next.js (App Router) · React · TypeScript · Tailwind CSS
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sprint 1 — Foundation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [x] Scaffold Next.js project with TypeScript, App Router, and Tailwind CSS
+- [x] Confirm clean production build
+- [x] Install and configure Tailwind CSS v4
+- [x] Set up design token layer — colors, spacing, radius, and shadows in `globals.css`
+- [x] Load brand fonts via `next/font/google` — Orbitron, Share Tech Mono, DM Sans
+- [x] Define type scale — hero, section, heading, label, meta, body, caption
+- [x] Build Header component — logo, nav links, mobile menu
+- [x] Build Footer component — brand, nav links, gradient divider, copyright
+- [x] Wire layout shell — Header + Footer into `layout.tsx` with metadata
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Sprint 2 — Homepage
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
+- [ ] Build Hero section — headline, subheading, CTA buttons
+- [ ] Build Intro Strip — short brand statement / value proposition
+- [ ] Build Featured Work section — project/system cards
+- [ ] Build Learning section — tutorials and guides preview
+- [ ] Build Services section — ways to work together
+- [ ] Build Resources section — tools, links, downloads
+- [ ] Build Homepage CTA section — newsletter or contact prompt
+- [ ] Wire all sections into `src/app/page.tsx`

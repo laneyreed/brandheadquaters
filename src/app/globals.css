@@ -113,3 +113,85 @@ body {
   color: var(--text-primary);
   font-family: var(--font-body);
 }
+
+/* ─────────────────────────────────────────────
+   TYPE SCALE — Build With Shannon
+   Source: brandsystem.html → Typography section
+───────────────────────────────────────────── */
+
+/* Hero — Orbitron 900 · 48px · uppercase · 2px tracking
+   Use: page hero headlines only */
+.type-hero {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Section Title — Orbitron 700 · 32px · uppercase
+   Use: section headings, major content blocks */
+.type-section {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Card Heading — Orbitron 700 · 22px · uppercase
+   Use: card titles, feature headings */
+.type-heading {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Section Label — Share Tech Mono · 13px · 3px tracking
+   Use: section eyebrows, labels above headings e.g. "// learn" */
+.type-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 3px;
+  color: var(--color-brand);
+}
+
+/* Metadata / Tag — Share Tech Mono · 11px · uppercase
+   Use: tags, badges, nav items, timestamps */
+.type-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Body — DM Sans 400 · 16px · 1.7 line height
+   Use: all body copy, paragraphs, descriptions */
+.type-body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* Caption — DM Sans 400 · 13px · muted
+   Use: supporting text, captions, footnotes */
+.type-caption {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
