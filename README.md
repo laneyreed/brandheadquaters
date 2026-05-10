@@ -2,6 +2,9 @@
 
 A premium personal brand website for Shannon as a builder, teacher, and systems-focused creator working with AI.
 
+
+![alt text](image.png)
+
 **Stack:** Next.js (App Router) · React · TypeScript · Tailwind CSS
 
 ---
